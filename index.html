@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Current Players</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #users {
+            list-style-type: none;
+            padding: 0;
+        }
+        #users li {
+            background: #eee;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Live Current Players</h1>
+    <ul id="users"></ul>
+
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+    <script>
+        const socket = io('https://<your-project-name>.glitch.me');
+
+        socket.on('update', (users) => {
+            const usersList = document.getElementById('users');
+            usersList.innerHTML = '';
+            users.forEach(user => {
+                const li = document.createElement('li');
+                li.textContent = user;
+                usersList.appendChild(li);
+            });
+        });
+    </script>
+</body>
+</html>
