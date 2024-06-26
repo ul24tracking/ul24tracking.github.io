@@ -21,22 +21,26 @@
     </style>
 </head>
 <body>
-    <h1>Live Current Players</h1>
-    <ul id="users"></ul>
+    <div>Current Visitors on unlocked24.github.io:
+        <span id="visitor-count">Loading...</span>
+    </div>
 
-    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
     <script>
-        const socket = io('https://<your-project-name>.glitch.me');
+        function updateVisitorCount() {
+            fetch('https://ul24.glitch.me/api/count')
+                .then(response => response.json())
+                .then(data => {
+                    const countElement = document.getElementById('visitor-count');
+                    if (countElement) {
+                        countElement.innerText = data.count;
+                    }
+                })
+                .catch(error => console.error('Error fetching visitor count:', error));
+        }
 
-        socket.on('update', (users) => {
-            const usersList = document.getElementById('users');
-            usersList.innerHTML = '';
-            users.forEach(user => {
-                const li = document.createElement('li');
-                li.textContent = user;
-                usersList.appendChild(li);
-            });
-        });
+        updateVisitorCount();
+        setInterval(updateVisitorCount, 10000); // Update every 10 seconds
     </script>
+
 </body>
 </html>
